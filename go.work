@@ -1,0 +1,11 @@
+go 1.26
+
+use (
+	./FundamentalPart10
+	./FundamentalPart3
+	./FundamentalPart5
+	./FundamentalPart6
+	./FundamentalPart7
+	./FundamentalPart8
+	./FundamentalPart9
+)
