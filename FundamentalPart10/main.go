@@ -3,31 +3,18 @@ package main
 import (
 	"FundamentalPart10/practice"
 	"fmt"
+	"time"
 )
 
 func main() {
-	var orders []practice.Order
-	for i := 1; i <= 5; i++ {
-		orders = append(orders, practice.Order{
-			ID:    i,
-			Price: float64(10 + i),
-		})
+	ketQua := make(chan string, 2)
+	go practice.CallServerA(ketQua)
+	go practice.CallServerB(ketQua)
+	select {
+	case <-ketQua:
+		res := <-ketQua
+		fmt.Println("ketQua", res)
+	case <-time.After(time.Second * 2):
+		fmt.Println("ketQua timeout")
 	}
-
-	jobs := make(chan practice.Order, len(orders))
-	results := make(chan practice.Order, len(orders))
-
-	for i := 1; i < 4; i++ {
-		go practice.Worker(i, jobs, results)
-	}
-	for _, o := range orders {
-		jobs <- o
-	}
-	close(jobs)
-
-	for i := 1; i <= len(orders); i++ {
-		ans := <-results
-		fmt.Printf("%d\t%f\n", ans.ID, ans.Price)
-	}
-	close(results)
 }
