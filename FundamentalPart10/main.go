@@ -2,20 +2,16 @@ package main
 
 import (
 	"FundamentalPart10/practice"
+	"context"
 	"fmt"
-	"sync"
+	"time"
 )
 
 func main() {
-	box := practice.DonationBox{
-		Balance: 0,
-	}
-	var wg sync.WaitGroup
-
-	for i := range 100 {
-		wg.Add(1)
-		go box.Donate(i, &wg)
-	}
-	wg.Wait()
-	fmt.Println("Box its full..., total:", box.Balance)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
+	defer cancel()
+	go practice.QueryDatabase(ctx)
+	time.Sleep(time.Second * 2)
+	fmt.Println("Calling practice with the database!")
+	time.Sleep(time.Second * 2)
 }
