@@ -8,4 +8,5 @@ use (
 	./FundamentalPart7
 	./FundamentalPart8
 	./FundamentalPart9
+	DesignPatterns
 )
